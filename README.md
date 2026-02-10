@@ -1,149 +1,163 @@
-# Lab: Contractors Lab
+# Flask Contract and Customer API
 
----
+A simple Flask REST API for managing contracts and customers with basic lookup functionality.
 
-## Overview
+## Description
 
-Now it is time for you to build your own request responses!
+This application provides two RESTful endpoints to retrieve contract information and verify customer existence. Built as a learning project to demonstrate Flask routing, HTTP status codes, and RESTful API design principles.
 
-You are working for a company that manages contracts between two parties. You need to manage sensitive data, and as such, you need to build two requests:
+## Features
 
-- One for **customer information**
-- One for **contract information**
+- **Contract Lookup**: Retrieve contract information by ID
+- **Customer Verification**: Check if a customer exists in the system
+- **RESTful Design**: Proper HTTP status codes (200, 204, 404)
+- **Test Coverage**: Comprehensive pytest test suite
 
-You will be using two new response codes:
+## Installation
 
-- **204**: Successful response but no data to send (e.g., confirming a customer exists without sharing data).
-- **404**: Not found — we cannot find the requested data.
+### Prerequisites
+- Python 3.8+
+- pip
 
----
+### Setup
 
-## Tasks
+1. Clone the repository:
+```bash
+git clone https://github.com/Shobinn24/python-flask-contracts-lab.git
+cd python-flask-contracts-lab
+```
 
-### Task 1: Define the Problem
+2. Create a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
-Build the following routes:
+3. Install dependencies:
+```bash
+pip install flask pytest
+```
 
-- `/contract/<id>`
-- `/customer/<customer_name>`
+## Usage
 
----
+### Running the Application
+```bash
+python app.py
+```
 
-### Task 2: Determine the Design
+The server will start on `http://localhost:5555`
 
-#### App Routes:
+### API Endpoints
 
-- `GET /contract/<id>`
-  - **200**: Contract found — return contract information.
-  - **404**: Contract not found.
+#### Get Contract by ID
+```http
+GET /contract/<id>
+```
 
-- `GET /customer/<customer_name>`
-  - **204**: Customer found — no information returned (sensitive).
-  - **404**: Customer not found.
+**Parameters:**
+- `id` (integer): Contract ID
 
----
+**Responses:**
+- `200 OK`: Returns contract information as plain text
+- `404 Not Found`: Contract does not exist
 
-### Task 3: Develop the Code
+**Example:**
+```bash
+curl http://localhost:5555/contract/1
+# Response: "This contract is for John and building a shed"
+```
 
-- Initialize Flask
-- Set up routes
-- Configure responses
+#### Check Customer Exists
+```http
+GET /customer/<customer_name>
+```
 
----
+**Parameters:**
+- `customer_name` (string): Customer name to verify
 
-### Task 4: Test and Refine
+**Responses:**
+- `204 No Content`: Customer exists (empty response body)
+- `404 Not Found`: Customer does not exist
 
-- Debug and test during development using the provided test suite and Flask instance.
+**Example:**
+```bash
+curl -i http://localhost:5555/customer/bob
+# Response: HTTP/1.1 204 NO CONTENT
+```
 
----
+## Running Tests
 
-### Task 5: Document and Maintain
+Execute the test suite using pytest:
+```bash
+pytest -v
+```
 
-- Commit as you go with meaningful messages.
-- Push commit history to GitHub periodically and when the lab is complete.
+### Test Coverage
 
----
+- ✅ Contract route returns 200 for valid ID
+- ✅ Contract route returns correct data
+- ✅ Contract route returns 404 for invalid ID
+- ✅ Customer route returns 204 for valid name
+- ✅ Customer route returns empty body
+- ✅ Customer route returns 404 for invalid name
 
-## Tools and Resources
+## Project Structure
+```
+.
+├── app.py              # Main Flask application
+├── app_test.py         # Pytest test suite
+├── conftest.py         # Pytest configuration
+├── README.md           # Project documentation
+└── requirements.txt    # Python dependencies
+```
 
-- **GitHub Repo**: *Link to be provided*
-- **Flask Quickstart**: [https://flask.palletsprojects.com/en/stable/quickstart/](https://flask.palletsprojects.com/en/stable/quickstart/)
+## Technologies Used
 
----
+- **Flask**: Web framework for Python
+- **pytest**: Testing framework
 
-## Instructions
+## Sample Data
 
-### Set Up
+### Contracts
+```python
+[
+    {"id": 1, "contract_information": "This contract is for John and building a shed"},
+    {"id": 2, "contract_information": "This contract is for a deck for a buisiness"},
+    {"id": 3, "contract_information": "This contract is to confirm ownership of this car"}
+]
+```
 
-Before coding:
+### Customers
+```python
+["bob", "bill", "john", "sarah"]
+```
 
-1. **Fork and Clone**
-   - Go to the provided GitHub repository link.
-   - Fork the repository to your GitHub account.
-   - Clone the forked repository to your local machine.
 
-2. **Open and Run**
-   - Open the project in VSCode.
-   - Run `pipenv install` to install dependencies.
-   - Run `pipenv shell` to activate the Python shell.
+### Code Standards
 
----
+- Add comments for complex logic
+- Follow PEP 8 style guidelines
+- Write tests for new features
+- Update README for new endpoints
 
-### Task 1: Define the Problem
+## Future Enhancements
 
-Build the following routes:
+- [ ] Add POST endpoints for creating contracts/customers
+- [ ] Implement database persistence (SQLite/PostgreSQL)
+- [ ] Add authentication and authorization
+- [ ] Implement pagination for large datasets
+- [ ] Add input validation and error handling
+- [ ] Create API documentation with Swagger/OpenAPI
 
-- `/contract/<id>`
-- `/customer/<customer_name>`
+## Author
 
----
+Shobinn Clark - Full-Stack Software Engineering Student at Flatiron School
 
-### Task 2: Determine the Design
+## License
 
-#### App Routes:
+This project is open source and available under the MIT License.
 
-- `/contract/<id>`
-  - **200**: Contract found — return information
-  - **404**: Contract not found
+## Acknowledgments
 
-- `/customer/<customer_name>`
-  - **204**: Customer found — return no information
-  - **404**: Customer not found
-
----
-
-### Task 3: Develop, Test, and Refine the Code
-
-1. Create a **feature branch**.
-2. Build the following routes:
-
-#### `/contract/<id>`
-
-- If the contract ID is found in the given array:
-  - Return contract information with a **200** response.
-- If not found:
-  - Return a **404** response.
-
-#### `/customer/<customer_name>`
-
-- If the customer name is found:
-  - Return a **204** response with an empty body.
-- If not found:
-  - Return a **404** response.
-
-3. Push the feature branch and open a PR on GitHub.
-4. Merge into `main`.
-
----
-
-### Task 4: Document and Maintain
-
-#### Best Practices:
-
-- Add comments to explain logic and purpose.
-- Clarify code intent for other developers.
-- Include a screenshot of completed work in the README.
-- Update the README to reflect functionality using [https://makeareadme.com](https://makeareadme.com).
-- Delete stale branches on GitHub.
-- Remove unnecessary or commented-out code.
-- Update `.gitignore` if needed to exclude sensitive data
+- Flatiron School for the curriculum and project structure
+- Flask documentation for excellent API reference
